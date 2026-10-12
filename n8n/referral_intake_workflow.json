@@ -1,0 +1,69 @@
+{
+  "name": "ReferralOps - Referral Intake API Starter",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "referralops-intake",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "6bf386e1-a497-47a5-b002-beb9d3d5a001",
+      "name": "Referral Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "referralops-intake-demo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:8000/api/v1/referrals",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Idempotency-Key",
+              "value": "={{ $json.headers['x-idempotency-key'] || $execution.id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.body }}",
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "2e9be4ef-cb15-4e16-9dc3-31a3c0a5f002",
+      "name": "Create Referral in FastAPI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [500, 300],
+      "onError": "stopWorkflow"
+    }
+  ],
+  "connections": {
+    "Referral Webhook": {
+      "main": [
+        [
+          {
+            "node": "Create Referral in FastAPI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "cebb65c7-8c6d-4023-a940-e1d82295d001",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": []
+}

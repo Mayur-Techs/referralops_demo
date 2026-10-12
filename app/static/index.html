@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ReferralOps · Lead Intelligence</title>
+  <style>
+    :root{--ink:#172c3d;--muted:#64748b;--line:#dfe7ed;--paper:#f5f7f8;--white:#fff;--navy:#163d56;--blue:#1d6583;--teal:#187b70;--amber:#a36216;--red:#a83d3d;--softblue:#e9f3f8;--softgreen:#e8f5f1;--softamber:#fff4e2;--softred:#fceeee;--shadow:0 8px 25px rgba(18,46,63,.06)}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:9px;background:var(--navy);color:white;padding:10px 14px;font-weight:650}button.secondary{background:#eaf0f4;color:var(--navy);border:1px solid var(--line)}button.danger{background:var(--softred);color:var(--red);border:1px solid #f0cece}button:disabled{opacity:.5;cursor:not-allowed}.shell{max-width:1440px;margin:auto;padding:22px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:22px}.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:13px;background:var(--navy);display:grid;place-items:center;color:white;font-size:21px;font-weight:800}.brand h1{font-size:21px;letter-spacing:-.4px;margin:0}.brand p{margin:2px 0 0;color:var(--muted);font-size:12px}.right-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}.pill{display:inline-flex;align-items:center;gap:7px;border-radius:999px;background:#e7eef2;color:#315366;padding:6px 10px;font-size:11px;font-weight:700}.dot{width:6px;height:6px;border-radius:50%;background:var(--teal)}.apikey{width:190px;background:white;border:1px solid var(--line);border-radius:8px;padding:8px}.intro{background:linear-gradient(115deg,#163d56,#245f79);border-radius:18px;padding:23px 25px;color:white;display:flex;justify-content:space-between;gap:18px;align-items:center;box-shadow:var(--shadow)}.eyebrow{text-transform:uppercase;font-size:10px;letter-spacing:1.5px;font-weight:800;opacity:.78}.intro h2{font-size:24px;line-height:1.2;margin:8px 0}.intro p{margin:0;max-width:780px;color:#d9e7ed}.intro-side{border-left:1px solid rgba(255,255,255,.24);padding-left:22px;min-width:180px}.intro-side small{display:block;opacity:.7;margin-bottom:5px}.intro-side strong{font-size:15px}.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:13px;margin:17px 0}.stat,.panel{background:white;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}.stat{padding:15px}.stat .label{font-size:11px;color:var(--muted);font-weight:650}.stat .num{font-size:26px;letter-spacing:-.8px;font-weight:780;margin:5px 0 2px}.stat .note{font-size:10px;color:var(--muted)}.layout{display:grid;grid-template-columns:minmax(340px,.86fr) minmax(460px,1.45fr);gap:16px;align-items:start}.panel{padding:18px;min-width:0}.panel-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}.panel-head h3{font-size:16px;margin:0}.panel-head p{font-size:11px;color:var(--muted);margin:3px 0 0}.tag{border-radius:6px;padding:4px 7px;font-size:10px;font-weight:750;background:var(--softblue);color:#245875;white-space:nowrap}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:5px;min-width:0}.field.full{grid-column:1/-1}.field label{font-size:11px;font-weight:750;color:#40586a}.field input,.field select,.field textarea{width:100%;border:1px solid #d7e1e8;border-radius:8px;background:#fff;padding:9px 10px;outline:none;color:var(--ink)}.field input:focus,.field select:focus,.field textarea:focus{border-color:#6ea2ba;box-shadow:0 0 0 3px #e5f1f6}.field textarea{min-height:74px;resize:vertical}.hint{font-size:10px;color:var(--muted)}.checks{display:grid;gap:8px;margin:13px 0}.check{display:flex;align-items:flex-start;gap:8px;font-size:11px;color:#435a6b}.check input{margin-top:3px;accent-color:var(--teal)}.form-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.notice{margin-top:12px;border-radius:9px;padding:10px;font-size:11px;display:none;white-space:pre-wrap}.notice.show{display:block}.notice.good{background:var(--softgreen);color:#1d675e}.notice.bad{background:var(--softred);color:#8d3030}.right-col{display:grid;gap:16px}.lead-table-wrap{overflow-x:auto}.lead-table{width:100%;border-collapse:collapse;font-size:12px}.lead-table th{text-align:left;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.55px;padding:9px 7px;border-bottom:1px solid var(--line);white-space:nowrap}.lead-table td{padding:11px 7px;border-bottom:1px solid #edf1f4;vertical-align:middle}.lead-table tbody tr{cursor:pointer}.lead-table tbody tr:hover{background:#f6fafc}.lead-table tbody tr.selected{background:#edf6f9}.lead-name{font-weight:750}.subline{color:var(--muted);font-size:10px;margin-top:2px}.status{display:inline-block;padding:4px 7px;border-radius:6px;font-size:10px;font-weight:750;background:#edf1f4;color:#516573;white-space:nowrap}.status.priority_review,.status.approved_for_follow_up,.status.completed,.status.approved_for_payout{background:var(--softgreen);color:#1e6a5e}.status.needs_info,.status.pending_review,.status.pending_human_review,.status.requested,.status.scheduled{background:var(--softamber);color:#825112}.status.nurture,.status.rejected,.status.cancelled,.status.held,.status.duplicate_review{background:var(--softred);color:#943b3b}.detail-empty{padding:25px;text-align:center;color:var(--muted);background:#f9fbfc;border:1px dashed #ccdbe3;border-radius:10px}.detail-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.detail-head h4{font-size:18px;margin:0}.detail-head p{margin:3px 0;color:var(--muted);font-size:11px}.score-card{min-width:88px;text-align:center;background:var(--softblue);border-radius:10px;padding:9px}.score-card strong{display:block;font-size:24px;line-height:1.1}.score-card span{font-size:10px;color:#3e6579}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0}.detail-item{background:#f7f9fa;border-radius:8px;padding:9px;min-width:0}.detail-item span{display:block;color:var(--muted);font-size:10px;margin-bottom:3px}.detail-item strong{font-size:12px;overflow-wrap:anywhere}.section-title{font-weight:800;font-size:12px;margin:16px 0 7px}.ai-box{background:#f0f7fa;border:1px solid #d9eaf1;padding:11px;border-radius:9px;font-size:12px;white-space:pre-wrap}.reason-list{padding-left:18px;margin:6px 0;font-size:11px;color:#4a6171}.action-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}.divider{height:1px;background:var(--line);margin:15px 0}.tiny{font-size:10px;color:var(--muted)}.site-tools{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:9px}.site-tools input,.commission-tools input{min-width:0;border:1px solid var(--line);border-radius:8px;padding:8px}.commission-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}.commission-tools input{width:150px}.toast{font-size:11px;margin-top:9px;color:var(--teal);min-height:17px}.footer{padding:20px 5px 4px;color:var(--muted);font-size:10px;text-align:center}.hidden{display:none!important}
+    @media(max-width:1050px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}}@media(max-width:680px){.shell{padding:12px}.topbar{align-items:flex-start;flex-direction:column}.right-head{justify-content:flex-start}.intro{align-items:flex-start;flex-direction:column}.intro h2{font-size:21px}.intro-side{border-left:0;border-top:1px solid rgba(255,255,255,.24);padding:12px 0 0;min-width:0;width:100%}.stats{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.detail-grid{grid-template-columns:1fr 1fr}.panel{padding:13px}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><div class="logo">R</div><div><h1>ReferralOps</h1><p>Evidence-first referral intelligence · Prototype 0.1</p></div></div>
+      <div class="right-head"><span class="pill"><span class="dot"></span><span id="mode-label">Checking service…</span></span><label class="tiny" for="admin-key">Admin demo key</label><input id="admin-key" class="apikey" value="demo-admin-key" autocomplete="off" aria-label="Admin demo key"><button class="secondary" id="refresh-btn" type="button">Refresh data</button></div>
+    </header>
+    <section class="intro">
+      <div><div class="eyebrow">Lead intelligence workspace</div><h2>From trusted referral to qualified site visit.</h2><p>Capture a referral, validate the record, inspect transparent scoring, review the AI draft, then track approvals and milestones. External messages and payments are deliberately disabled.</p></div>
+      <div class="intro-side"><small>Demo project profile</small><strong>Lakhotia Industrial Complex</strong><div class="tiny" style="color:#d9e7ed;margin-top:5px">Initial target: industrial requirements</div></div>
+    </section>
+    <section class="stats" aria-label="Key metrics">
+      <div class="stat"><div class="label">Referral submissions</div><div class="num" id="k-submissions">—</div><div class="note">Every submitted referral attempt</div></div>
+      <div class="stat"><div class="label">Unique leads</div><div class="num" id="k-leads">—</div><div class="note">Persisted lead records</div></div>
+      <div class="stat"><div class="label">Qualified inquiries</div><div class="num" id="k-qualified">—</div><div class="note">Meets demo routing conditions</div></div>
+      <div class="stat"><div class="label">Completed site visits</div><div class="num" id="k-visits">—</div><div class="note">Unique leads with completed visits</div></div>
+      <div class="stat"><div class="label">Duplicate submissions</div><div class="num" id="k-duplicates">—</div><div class="note">Preserved for attribution review</div></div>
+    </section>
+
+    <main class="layout">
+      <section class="panel">
+        <div class="panel-head"><div><h3>Register a referral</h3><p>Use synthetic data for the demonstration.</p></div><span class="tag">INPUT + CONSENT</span></div>
+        <form id="referral-form">
+          <div class="form-grid">
+            <div class="field"><label for="partner_code">Referral partner *</label><select id="partner_code" required><option value="PARTNER-001">PARTNER-001 · Industrial network</option><option value="PARTNER-002">PARTNER-002 · Broker</option></select></div>
+            <div class="field"><label for="profile_id">Qualification profile *</label><select id="profile_id" required><option value="industrial_land">Industrial Land — Lakhotia</option><option value="generic_b2b_demo">Generic B2B — reuse demo</option></select><span class="hint">Configuration profile controls accepted sectors and routing weights.</span></div>
+            <div class="field"><label for="industry">Business sector *</label><select id="industry" required><option value="manufacturing">Manufacturing</option><option value="warehousing">Warehousing</option><option value="logistics">Logistics</option><option value="other">Other / needs review</option></select></div>
+            <div class="field"><label for="company_name">Company name *</label><input id="company_name" required minlength="2" maxlength="180" placeholder="Example Components Pvt Ltd"></div>
+            <div class="field"><label for="contact_name">Contact person *</label><input id="contact_name" required minlength="2" maxlength="120" placeholder="Synthetic contact name"></div>
+            <div class="field"><label for="email">Business email *</label><input id="email" type="email" required maxlength="254" placeholder="contact@example.test"></div>
+            <div class="field"><label for="phone">Phone *</label><input id="phone" type="tel" required minlength="7" maxlength="24" placeholder="+91 9000000000"></div>
+            <div class="field"><label for="plot_size_sqm">Required area (m²)</label><input id="plot_size_sqm" type="number" min="1" step="0.1" placeholder="e.g. 1500"></div>
+            <div class="field"><label for="budget_inr">Budget estimate / scale (INR)</label><input id="budget_inr" type="number" min="1" step="1000" placeholder="e.g. 25000000"></div>
+            <div class="field"><label for="timeline">Purchase timeline *</label><select id="timeline" required><option value="unknown">Not yet known</option><option value="immediate">Immediate</option><option value="within_3_months">Within 3 months</option><option value="within_6_months">Within 6 months</option><option value="within_12_months">Within 12 months</option></select></div>
+            <div class="field"><label for="is_decision_maker">Decision-making role</label><select id="is_decision_maker"><option value="unknown">Need to confirm</option><option value="true">Decision-maker</option><option value="false">Influencer / other</option></select></div>
+            <div class="field full"><label for="business_requirements">Business requirements (optional)</label><textarea id="business_requirements" maxlength="1000" placeholder="Industry use, infrastructure needs, location criteria. Do not enter sensitive personal information."></textarea><span class="hint">This text is untrusted input. The AI must not follow instructions embedded inside it.</span></div>
+            <div class="field"><label for="preferred_contact_channel">Preferred channel</label><select id="preferred_contact_channel"><option value="email">Email</option><option value="phone">Phone</option><option value="whatsapp">WhatsApp</option></select></div>
+            <div class="field"><label for="site_visit_interest">Site visit interest</label><select id="site_visit_interest"><option value="true">Interested / requested</option><option value="false">Not stated</option></select></div>
+          </div>
+          <div class="checks">
+            <label class="check"><input type="checkbox" id="consent_to_share" required><span><strong>Required:</strong> prospect permission is recorded for sharing and processing this referral for qualification. Do not use real personal data without an appropriate lawful basis and evidence.</span></label>
+            <label class="check"><input type="checkbox" id="contact_consent"><span><strong>Separate permission:</strong> the prospect has authorised contact through the selected channel. Without this, follow-up approval must be blocked.</span></label>
+          </div>
+          <div class="form-actions"><button type="submit" id="submit-btn">Validate & register referral</button><button class="secondary" type="button" id="sample-btn">Fill synthetic sample</button><button class="secondary" type="reset">Reset form</button></div>
+          <div id="form-notice" class="notice" role="status"></div>
+        </form>
+      </section>
+
+      <div class="right-col">
+        <section class="panel">
+          <div class="panel-head"><div><h3>Lead queue</h3><p>Click a row to inspect evidence, scoring and next actions.</p></div><span class="tag">HUMAN REVIEW</span></div>
+          <div class="lead-table-wrap"><table class="lead-table"><thead><tr><th>Prospect</th><th>Score</th><th>Routing state</th><th>AI state</th></tr></thead><tbody id="lead-rows"><tr><td colspan="4" class="subline">Loading leads…</td></tr></tbody></table></div>
+          <div id="queue-notice" class="toast" role="status"></div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><div><h3>Lead passport</h3><p>Traceable record · draft only · no automated outbound actions</p></div><span class="tag">EVIDENCE</span></div>
+          <div id="lead-detail" class="detail-empty">Select a lead from the queue to see its qualification reasons, AI analysis, referral history and available workflow actions.</div>
+        </section>
+      </div>
+    </main>
+    <footer class="footer">Local prototype only · Sample scoring thresholds are illustrative · No external message is sent and no commission payment is executed.</footer>
+  </div>
+<script>
+const $ = (id) => document.getElementById(id);
+let selectedLeadId = null;
+let selectedLeadDetail = null;
+const headers = () => ({"X-Admin-Key": $('admin-key').value.trim()});
+const esc = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function showNotice(id, message, kind='good') { const el=$(id); el.textContent=message; el.className='notice show '+(kind==='bad'?'bad':'good'); }
+function hideNotice(id){const el=$(id);el.className='notice';el.textContent='';}
+function fmt(value){ if(value===null||value===undefined||value==='') return 'Not provided'; if(typeof value==='number') return value.toLocaleString('en-IN'); return String(value).replaceAll('_',' '); }
+async function api(path, options={}) {
+  const response = await fetch(path, options);
+  const text = await response.text();
+  let body; try { body = text ? JSON.parse(text) : {}; } catch { body = {detail:text}; }
+  if (!response.ok) throw new Error(body.detail ? (typeof body.detail==='string'?body.detail:JSON.stringify(body.detail)) : `HTTP ${response.status}`);
+  return body;
+}
+async function init(){
+  try { const cfg=await api('/api/v1/config'); $('mode-label').textContent=cfg.ai_mode==='demo'?'DEMO AI · NO KEY':`EXTERNAL AI · ${cfg.ai_provider}`; }
+  catch(e){ $('mode-label').textContent='API unavailable'; }
+  await refreshAll();
+}
+async function refreshAll(){ await Promise.all([loadKpis(), loadLeads()]); }
+async function loadKpis(){
+  try {
+    const k=await api('/api/v1/kpis',{headers:headers()});
+    $('k-submissions').textContent=k.total_referral_submissions;
+    $('k-leads').textContent=k.unique_leads;
+    $('k-qualified').textContent=k.qualified_inquiries;
+    $('k-visits').textContent=k.completed_site_visit_leads;
+    $('k-duplicates').textContent=k.duplicate_submissions;
+  } catch(e) { $('queue-notice').textContent='Could not load KPIs: '+e.message; }
+}
+async function loadLeads(){
+  const tbody=$('lead-rows');
+  try {
+    const leads=await api('/api/v1/leads?limit=100',{headers:headers()});
+    if(!leads.length){tbody.innerHTML='<tr><td colspan="4" class="subline">No referrals yet. Register the first synthetic referral.</td></tr>';return;}
+    tbody.innerHTML=leads.map(l=>`<tr data-id="${esc(l.id)}" class="${l.id===selectedLeadId?'selected':''}" tabindex="0"><td><div class="lead-name">${esc(l.company_name)}</div><div class="subline">${esc(l.industry)} · ${esc(l.email)}</div></td><td><strong>${l.score}</strong><div class="subline">/ 100</div></td><td><span class="status ${esc(l.status)}">${esc(l.status.replaceAll('_',' '))}</span></td><td><span class="status ${l.ai_analysis_status==='ready'?'approved_for_follow_up':'pending_review'}">${esc(l.ai_analysis_status.replaceAll('_',' '))}</span></td></tr>`).join('');
+    tbody.querySelectorAll('tr[data-id]').forEach(row=>{row.addEventListener('click',()=>selectLead(row.dataset.id));row.addEventListener('keydown',e=>{if(e.key==='Enter')selectLead(row.dataset.id)});});
+  } catch(e){tbody.innerHTML=`<tr><td colspan="4" class="subline">${esc(e.message)} — enter the correct admin demo key.</td></tr>`;}
+}
+async function selectLead(id){
+  selectedLeadId=id;
+  try { selectedLeadDetail=await api('/api/v1/leads/'+encodeURIComponent(id),{headers:headers()}); renderDetail(selectedLeadDetail); await loadLeads(); }
+  catch(e){$('lead-detail').innerHTML=`<div class="detail-empty">Unable to load lead: ${esc(e.message)}</div>`;}
+}
+function renderDetail(l){
+  const history=(l.referral_history||[]).map(s=>`<li>${esc(s.submitted_company_name)} · partner #${s.partner_id} · ${s.is_duplicate?'duplicate claim':'original attribution'} · ${esc(s.status)}</li>`).join('')||'<li>No referral history.</li>';
+  const reasons=(l.score_reasons||[]).map(r=>`<li>${esc(r)}</li>`).join('');
+  const concerns=(l.ai_concerns||[]).map(x=>`<li>${esc(x)}</li>`).join('');
+  const visits=(l.site_visits||[]);
+  const latest=visits[visits.length-1];
+  let visitActions='';
+  if(!latest || ['cancelled','completed'].includes(latest.status)) visitActions='<button class="secondary" onclick="requestVisit()">Request site visit</button>';
+  else if(latest.status==='requested') visitActions='<button class="secondary" onclick="scheduleVisit()">Schedule visit</button><button class="danger" onclick="cancelVisit()">Cancel request</button>';
+  else if(latest.status==='scheduled') visitActions='<button class="secondary" onclick="completeVisit()">Mark visit completed</button><button class="danger" onclick="cancelVisit()">Cancel visit</button>';
+  const latestText=latest?`Latest visit: ${latest.status}${latest.scheduled_at?' · '+new Date(latest.scheduled_at).toLocaleString():''}`:'No site visit recorded';
+  const referralDispute=l.attribution_disputed?'<div class="notice show bad">Attribution dispute: commission approval is blocked until reviewed.</div>':'';
+  $('lead-detail').innerHTML=`
+    <div class="detail-head"><div><h4>${esc(l.company_name)}</h4><p>${esc(l.contact_name)} · ${esc(l.industry)} · ${esc(l.email)} · ${esc(l.phone)}</p></div><div class="score-card"><strong>${l.score}</strong><span>FIT SCORE / 100</span></div></div>
+    ${referralDispute}
+    <div class="detail-grid">
+      <div class="detail-item"><span>Qualification profile</span><strong>${esc(l.profile_id||'industrial_land')}</strong></div><div class="detail-item"><span>Routing state</span><strong>${esc(l.status.replaceAll('_',' '))}</strong></div><div class="detail-item"><span>Human approval</span><strong>${esc(l.approval_state.replaceAll('_',' '))}</strong></div>
+      <div class="detail-item"><span>Space requirement</span><strong>${esc(fmt(l.plot_size_sqm))} ${l.plot_size_sqm?'m²':''}</strong></div><div class="detail-item"><span>Budget / scale</span><strong>${esc(l.budget_inr?'₹ '+fmt(l.budget_inr):'Not provided')}</strong></div>
+      <div class="detail-item"><span>Timeline</span><strong>${esc(fmt(l.timeline))}</strong></div><div class="detail-item"><span>Contact permission</span><strong>${l.contact_consent?'Recorded':'Not recorded'}</strong></div>
+    </div>
+    <div class="section-title">AI-assisted analysis <span class="tiny">· ${esc(l.ai_provider)} / ${esc(l.ai_analysis_status)}</span></div>
+    <div class="ai-box">${esc(l.ai_summary||'No analysis summary available.')}${l.follow_up_draft?'\n\nPROPOSED DRAFT (not sent):\n'+esc(l.follow_up_draft):'\n\nNo draft available; manual review required.'}</div>
+    ${l.ai_missing_info?.length?`<div class="section-title">AI-suggested missing information</div><ul class="reason-list">${l.ai_missing_info.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}
+    ${concerns?`<div class="section-title">Warnings</div><ul class="reason-list">${concerns}</ul>`:''}
+    <div class="section-title">Deterministic score explanation</div><ul class="reason-list">${reasons}</ul>
+    ${l.missing_fields?.length?`<div class="tiny">Clarification fields: ${l.missing_fields.map(esc).join(', ')}</div>`:''}
+    <div class="section-title">Human review</div><div class="action-row"><button onclick="approveLead()">Approve follow-up draft</button><button class="secondary" onclick="holdLead()">Hold</button><button class="danger" onclick="rejectLead()">Reject</button><button class="secondary" onclick="reanalyzeLead()">Re-run analysis</button><button class="danger" onclick="withdrawContactConsent()">Record contact opt-out</button></div>
+    <div class="section-title">Site-visit workflow</div><div class="tiny">${esc(latestText)} · Scheduling here records a demo milestone only; no calendar invitation is sent.</div><div class="site-tools"><input id="visit-time" type="datetime-local" aria-label="Proposed site visit time"><div>${visitActions}</div></div>
+    <div class="section-title">Referral attribution history</div><ul class="reason-list">${history}</ul>
+    <div class="section-title">Audit events</div><ul class="reason-list">${(l.audit_history||[]).slice().reverse().map(a=>`<li>${esc(a.event_type)} · ${esc(a.actor)} · ${new Date(a.created_at).toLocaleString()}</li>`).join('')||'<li>No audit events.</li>'}</ul>
+    <div class="section-title">Commission eligibility</div><div class="tiny">A completed site visit is only a demo eligibility signal. Actual partner agreement and policy must be checked.</div><div class="action-row"><button class="secondary" onclick="checkCommission()">Check eligibility</button></div><div class="commission-tools"><input id="commission-amount" type="number" min="1" placeholder="Proposed INR amount"><button class="secondary" onclick="approveCommission()">Approve for payout review</button><button class="danger" onclick="holdCommission()">Hold commission</button></div>
+    <div id="detail-toast" class="toast" role="status"></div>`;
+}
+async function refreshSelected(){await selectLead(selectedLeadId);await refreshAll();}
+async function postJson(path, body, method='POST') {return api(path,{method,headers:{...headers(),'Content-Type':'application/json'},body:JSON.stringify(body)});}
+async function approval(decision){if(!selectedLeadId)return;try{const r=await postJson(`/api/v1/leads/${selectedLeadId}/approval`,{decision,reviewer:'Demo Sales Reviewer',notes:'Prototype review from dashboard.'});$('detail-toast').textContent=r.message;await refreshSelected();}catch(e){$('detail-toast').textContent=e.message;}}
+function approveLead(){approval('approve_follow_up')} function holdLead(){approval('hold')} function rejectLead(){approval('reject')}
+async function reanalyzeLead(){if(!selectedLeadId)return;try{const r=await postJson(`/api/v1/leads/${selectedLeadId}/reanalyze`,{});$('detail-toast').textContent=`Analysis state: ${r.ai_analysis_status}. No message sent.`;await refreshSelected();}catch(e){$('detail-toast').textContent=e.message;}}
+async function withdrawContactConsent(){if(!selectedLeadId)return;const reference=prompt('Enter a reference ID for the opt-out record (do not paste the full message):');if(!reference||reference.trim().length<3){$('detail-toast').textContent='A valid evidence reference is required.';return;}try{const r=await postJson(`/api/v1/leads/${selectedLeadId}/consent/withdraw-contact`,{requested_by:'Demo Admin',source:'other',evidence_reference:reference.trim()});$('detail-toast').textContent=r.message;await refreshSelected();}catch(e){$('detail-toast').textContent=e.message;}}
+async function requestVisit(){if(!selectedLeadId)return;try{await postJson(`/api/v1/leads/${selectedLeadId}/site-visits`,{requested_by:'Demo Sales Reviewer',notes:'Prototype site-visit request.'});await refreshSelected();}catch(e){$('detail-toast').textContent=e.message;}}
+function getLatestVisit(){return (selectedLeadDetail?.site_visits||[]).slice(-1)[0]}
+async function updateVisit(status){const v=getLatestVisit();if(!v)return;const body={status,notes:'Updated in prototype dashboard.'};if(status==='scheduled'){const value=$('visit-time')?.value;if(!value){$('detail-toast').textContent='Enter a future date/time before scheduling.';return;}body.scheduled_at=new Date(value).toISOString();}try{await postJson(`/api/v1/site-visits/${v.id}`,body,'PATCH');await refreshSelected();}catch(e){$('detail-toast').textContent=e.message;}}
+function scheduleVisit(){updateVisit('scheduled')} function completeVisit(){updateVisit('completed')} function cancelVisit(){updateVisit('cancelled')}
+async function checkCommission(){if(!selectedLeadId)return;try{const r=await postJson(`/api/v1/leads/${selectedLeadId}/commission/check`,{});$('detail-toast').textContent=r.eligible_for_human_review?'Eligible for human review only; no payout executed.':r.reasons.join(' ');await refreshSelected();}catch(e){$('detail-toast').textContent=e.message;}}
+async function submitCommission(decision){if(!selectedLeadId)return;const raw=$('commission-amount')?.value;const body={decision,reviewer:'Demo Finance Reviewer',notes:'Prototype commission decision; not a payment instruction.'};if(decision==='approved_for_payout'){if(!raw||Number(raw)<=0){$('detail-toast').textContent='Enter a proposed amount for the human review record.';return;}body.proposed_amount_inr=Number(raw);}try{const r=await postJson(`/api/v1/leads/${selectedLeadId}/commission/review`,body);$('detail-toast').textContent=r.message;await refreshSelected();}catch(e){$('detail-toast').textContent=e.message;}}
+function approveCommission(){submitCommission('approved_for_payout')} function holdCommission(){submitCommission('held')}
+$('referral-form').addEventListener('submit',async e=>{
+  e.preventDefault();hideNotice('form-notice');$('submit-btn').disabled=true;$('submit-btn').textContent='Validating…';
+  const val=id=>$(id).value;
+  const decision=val('is_decision_maker');
+  const payload={partner_code:val('partner_code'),profile_id:val('profile_id'),company_name:val('company_name'),contact_name:val('contact_name'),email:val('email'),phone:val('phone'),industry:val('industry'),business_requirements:val('business_requirements'),plot_size_sqm:val('plot_size_sqm')?Number(val('plot_size_sqm')):null,budget_inr:val('budget_inr')?Number(val('budget_inr')):null,timeline:val('timeline'),is_decision_maker:decision==='unknown'?null:decision==='true',site_visit_interest:val('site_visit_interest')==='true',preferred_contact_channel:val('preferred_contact_channel'),consent_to_share:$('consent_to_share').checked,contact_consent:$('contact_consent').checked};
+  try{
+    const r=await api('/api/v1/referrals',{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':crypto.randomUUID()},body:JSON.stringify(payload)});
+    const resultText = r.is_duplicate
+      ? `Duplicate claim recorded for human review.\nLead ID: ${r.lead_id}\nExisting contact details were not returned by the referral endpoint.\nNo message sent.`
+      : `Referral saved successfully.\nLead ID: ${r.lead_id}\nScore: ${r.lead.score}/100 · Routing: ${r.lead.status}\nAI state: ${r.lead.ai_analysis_status} (${r.lead.ai_provider})\nNo message sent.`;
+    showNotice('form-notice',resultText,r.is_duplicate?'bad':'good');
+    await refreshAll();await selectLead(r.lead_id);
+  }catch(err){showNotice('form-notice',err.message,'bad');}
+  finally{$('submit-btn').disabled=false;$('submit-btn').textContent='Validate & register referral';}
+});
+$('sample-btn').addEventListener('click',()=>{
+  const n=Date.now();$('company_name').value='Northstar Components Demo '+String(n).slice(-4);$('contact_name').value='Aarav Example';$('email').value=`lead${n}@example.test`;$('phone').value='+91 90000 '+String(n).slice(-5);$('industry').value='manufacturing';$('plot_size_sqm').value='1800';$('budget_inr').value='25000000';$('timeline').value='within_3_months';$('is_decision_maker').value='true';$('site_visit_interest').value='true';$('business_requirements').value='Synthetic test prospect: requires industrial space for a light manufacturing unit and access suitable for goods vehicles.';$('consent_to_share').checked=true;$('contact_consent').checked=true;
+});
+$('refresh-btn').addEventListener('click',refreshAll);
+$('admin-key').addEventListener('change',refreshAll);
+$('referral-form').addEventListener('reset',()=>setTimeout(()=>hideNotice('form-notice'),0));
+init();
+</script>
+</body>
+</html>

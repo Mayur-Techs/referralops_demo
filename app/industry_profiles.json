@@ -1,0 +1,87 @@
+{
+  "industrial_land": {
+    "display_name": "Industrial Land — Lakhotia prototype",
+    "purpose": "Industrial land enquiry qualification",
+    "accepted_industries": ["manufacturing", "warehousing", "logistics"],
+    "weights": {
+      "industry_fit": 30,
+      "other_industry": 12,
+      "plot_size_sqm": 20,
+      "budget_inr": 20,
+      "timeline": {"immediate": 15, "within_3_months": 13, "within_6_months": 10, "within_12_months": 5, "unknown": 0},
+      "decision_maker": 10,
+      "non_decision_maker": 5,
+      "site_visit_interest": 5
+    },
+    "thresholds": {"priority_review": 75, "standard_review": 50},
+    "clarification_fields": ["plot_size_sqm", "budget_inr", "timeline"]
+  },
+  "generic_b2b_demo": {
+    "display_name": "Generic B2B — Reuse demonstration",
+    "purpose": "Show that sector acceptance and routing thresholds are configurable",
+    "accepted_industries": ["manufacturing", "warehousing", "logistics", "other"],
+    "weights": {
+      "industry_fit": 30,
+      "other_industry": 30,
+      "plot_size_sqm": 20,
+      "budget_inr": 20,
+      "timeline": {"immediate": 15, "within_3_months": 13, "within_6_months": 10, "within_12_months": 5, "unknown": 0},
+      "decision_maker": 10,
+      "non_decision_maker": 5,
+      "site_visit_interest": 5
+    },
+    "thresholds": {"priority_review": 75, "standard_review": 50},
+    "clarification_fields": ["budget_inr", "timeline"]
+  },
+  "industrial": {
+    "display_name": "Industrial Park — Lakhotia",
+    "purpose": "Industrial manufacturing and warehousing space",
+    "accepted_industries": ["manufacturing", "warehousing", "logistics"],
+    "weights": {
+      "industry_fit": 30,
+      "other_industry": 12,
+      "plot_size_sqm": 20,
+      "budget_inr": 20,
+      "timeline": {"immediate": 15, "within_3_months": 13, "within_6_months": 10, "within_12_months": 5, "unknown": 0},
+      "decision_maker": 10,
+      "non_decision_maker": 5,
+      "site_visit_interest": 5
+    },
+    "thresholds": {"priority_review": 75, "standard_review": 50},
+    "clarification_fields": ["plot_size_sqm", "budget_inr", "timeline"]
+  },
+  "flats": {
+    "display_name": "Residential Flats — Shree Heights",
+    "purpose": "Residential apartment buyer qualification",
+    "accepted_industries": ["other"],
+    "weights": {
+      "industry_fit": 20,
+      "other_industry": 20,
+      "plot_size_sqm": 15,
+      "budget_inr": 25,
+      "timeline": {"immediate": 20, "within_3_months": 15, "within_6_months": 10, "within_12_months": 5, "unknown": 0},
+      "decision_maker": 10,
+      "non_decision_maker": 5,
+      "site_visit_interest": 10
+    },
+    "thresholds": {"priority_review": 75, "standard_review": 50},
+    "clarification_fields": ["budget_inr", "timeline"]
+  },
+  "plots": {
+    "display_name": "Residential/Commercial Plots — Vrindavan Greens",
+    "purpose": "Land plot purchase and investment qualification",
+    "accepted_industries": ["other"],
+    "weights": {
+      "industry_fit": 20,
+      "other_industry": 20,
+      "plot_size_sqm": 25,
+      "budget_inr": 20,
+      "timeline": {"immediate": 15, "within_3_months": 12, "within_6_months": 8, "within_12_months": 4, "unknown": 0},
+      "decision_maker": 10,
+      "non_decision_maker": 5,
+      "site_visit_interest": 10
+    },
+    "thresholds": {"priority_review": 75, "standard_review": 50},
+    "clarification_fields": ["plot_size_sqm", "budget_inr", "timeline"]
+  }
+}
