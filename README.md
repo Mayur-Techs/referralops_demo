@@ -1,128 +1,339 @@
-# ReferralOps — Evidence-first Referral & Lead Intelligence Prototype
+# Matrix360 · Central Lead Intelligence Platform
 
-**Status:** local demonstration MVP. This is not a production CRM or a verified company integration.
+> **Mayur's Shared Database & Canonical API Foundation**  
+> *Matrix360 · Intern Team Project · October 2026*
 
-ReferralOps demonstrates a connected workflow for an industrial-project referral programme: referral intake, consent gating, partner attribution, duplicate detection, deterministic qualification, optional AI-assisted analysis/drafts, human approval, site-visit state tracking, commission-review gating, audit history and KPI reporting.
+---
 
-## What works in this demo
+## 1. System Overview & Architecture
 
-- FastAPI REST API with interactive OpenAPI docs at `/docs`.
-- SQLite persistence using SQLAlchemy sessions and commits.
-- Synthetic referral partners `PARTNER-001` and `PARTNER-002` seeded on startup.
-- Pydantic validation for request shape, types and bounds.
-- Consent-to-share gate checked before persistence.
-- Separate contact-consent check before approving a follow-up draft.
-- Duplicate detection and referral history; first attribution is not overwritten.
-- Optional `Idempotency-Key` handling to stop repeated requests from creating duplicate submissions.
-- Deterministic, explainable scoring owned by Python—not the LLM.
-- Separate JSON qualification profiles (`industrial_land` and `generic_b2b_demo`) so sector acceptance and thresholds can change without modifying endpoint code.
-- Demo analysis mode that works without an external account; optional live OpenAI Chat Completions adapter using structured output and application-level validation.
-- Manual follow-up approval, site visit requested/scheduled/completed/cancelled transitions, and commission review state.
-- Admin-protected lead listing, details, approvals and KPI routes (`X-Admin-Key`).
-- Simple browser dashboard that calls the same REST APIs.
-- Tests for consent, duplicates, idempotency, model failure, unsafe output, approval gates, site-visit transitions, commission gates and KPIs.
-- Example n8n webhook-to-API workflow under `n8n/`.
+Matrix360 is a central lead intelligence system unifying six intern team responsibilities across three property developments:
 
-## What is deliberately not connected
+1. **Lakhotia** — Industrial plots and manufacturing space (Initial Target).
+2. **Shree Heights** — Residential 2 & 3 BHK flats in Hooghly (`WBRERA/P/HOO/2023/000504`).
+3. **Vrindavan Greens** — Residential & commercial land plots.
 
-- No email, phone, WhatsApp or LinkedIn message is sent.
-- No real calendar invitation is created.
-- No commission payment or transfer is executed.
-- No production CRM is connected; use the REST API or a test/sandbox CRM adapter.
-- Company plot availability, pricing, approvals, legal status and delivery timelines are not verified by this software.
+### Architectural Core Principle: One Central Database
+- **No teammate maintains an isolated database or spreadsheet.**
+- **Never sync raw SQLite files over Google Drive, OneDrive, or network folders.**
+- **Local development:** Runs out-of-the-box on local SQLite (`sqlite:///./referralops.db`).
+- **Shared multi-location team use:** The backend connects to a hosted PostgreSQL instance (`DATABASE_URL=postgresql://...`). Teammates open the **single hosted application URL** or call the protected REST API over HTTPS.
 
-Those are deliberate boundaries: a working prototype should not pretend an unconfigured external integration succeeded.
+---
 
-## Run locally (Windows PowerShell)
+## 2. Mayur's Database & API Foundation (What Has Been Built)
 
-Use Python 3.11+ (tested here with Python 3.13).
+1. **Canonical Shared Schema:** 21 standardized fields shared across all tools:
+   - `lead_id`, `client`, `property_type`, `lead_type`, `source`, `evidence`, `name`, `company`, `phone`, `email`, `linkedin_url`, `consent`, `opted_out`, `fit_score`, `fit_reasons`, `intent`, `stage`, `owner`, `next_action`, `next_action_date`, `utm_source`, `utm_campaign`.
+2. **3-Step Deduplication Engine:**
+   - **Step 1 — Phone (Trailing 10 Digits):** Extracts all digits; matches last 10 digits regardless of formatting or country codes (e.g. `+91 9876543210` matches `09876543210`).
+   - **Step 2 — Email:** Whitespace-trimmed and case-folded.
+   - **Step 3 — LinkedIn URL:** Normalized path without protocol, `www`, or tracking query parameters.
+   - *Safety Guarantee:* Missing fields never match; duplicates preserve original attribution and flag records for review.
+3. **Deterministic Scoring Engine (0–100):** Multi-property configurable JSON profiles (`industrial`, `flats`, `plots`) with automatic **Hot / Warm / Cold** intent classification.
+4. **Shared Server-Side AI Connection:** Single managed Grok / xAI connection with deterministic local demo fallback (`AI_PROVIDER=demo | xai | openai`).
+5. **Non-Destructive Database Migrations:** Alembic versioned migrations (`alembic/versions/b44e2fae97e3_add_canonical_lead_fields_and_dedup_keys.py`).
+6. **Multi-Property Dashboard:** Interactive web interface with real-time search, filters, lead passport viewer, and one-click demo seeder.
+7. **29 Automated Tests:** 100% green pytest test suite.
 
+---
+
+## 3. Team Integration Guide (How Teammates Connect)
+
+All tools communicate with Mayur's central database via the standardized REST API.
+
+```
+                  ┌────────────────────────────────────────┐
+                  │          Matrix360 Hosted URL          │
+                  │        https://matrix360.live          │
+                  └───────────────────┬────────────────────┘
+                                      │
+       ┌──────────────────────────────┼──────────────────────────────┐
+       │                              │                              │
+┌──────▼──────┐                ┌──────▼──────┐                ┌──────▼──────┐
+│   Shalini   │                │   Avinash   │                │  Peeyusha   │
+│Landing Page │                │Chat Widget  │                │Radar Scraper│
+└──────┬──────┘                └──────┬──────┘                └──────┬──────┘
+       │                              │                              │
+       └──────────────────────┐       │       ┌──────────────────────┘
+                              │       │       │
+                        POST  ▼       ▼       ▼
+                       /api/v1/leads (Mayur's Central API)
+                                      │
+                                      ▼
+                       3-Step Deduplication Check
+                       (Phone 10 → Email → LinkedIn)
+                                      │
+                                      ▼
+                        Deterministic Scoring (Pratha)
+                                      │
+                                      ▼
+                     One Central Database (SQLite / Postgres)
+                                      │
+       ┌──────────────────────────────┼──────────────────────────────┐
+       │                              │                              │
+┌──────▼──────┐                ┌──────▼──────┐                ┌──────▼──────┐
+│   Tanmayi   │                │    Mayur    │                │    Team     │
+│  WhatsApp   │                │ Central Web │                │ n8n Webhook │
+│Consent Gate │                │  Dashboard  │                │ Reminders   │
+└─────────────┘                └─────────────┘                └─────────────┘
+```
+
+### A. Shalini — Landing Page & Ad Inquiries (`Shree Heights`)
+- **Her Role:** Landing page for Shree Heights with RERA registration `WBRERA/P/HOO/2023/000504`, 2/3 BHK options, and UTM tracking.
+- **Hosted Page:** Available at [`/shree-heights`](http://127.0.0.1:8000/shree-heights).
+- **How to Send Leads:**
+  Form submissions send a `POST` request to `/api/v1/leads`:
+  ```json
+  {
+    "client": "Shree Heights",
+    "property_type": "flats",
+    "lead_type": "buyer",
+    "source": "ad",
+    "evidence": "Shree Heights Meta Ad Click",
+    "name": "Ananya Das",
+    "company": "Individual Buyer",
+    "phone": "+91 9830012345",
+    "email": "ananya.das@example.test",
+    "timeline": "immediate",
+    "site_visit_interest": true,
+    "consent": true,
+    "utm_source": "meta_ads",
+    "utm_campaign": "monsoon_launch"
+  }
+  ```
+
+### B. Avinash — Website Chat Widget
+- **Her/His Role:** Interactive chat widget qualifying prospects and booking site visits.
+- **How to Send Leads:**
+  When a visitor provides contact details in chat, send to `/api/v1/leads`:
+  ```json
+  {
+    "client": "Lakhotia",
+    "property_type": "industrial",
+    "lead_type": "company",
+    "source": "chat",
+    "evidence": "Website chat qualification session #402",
+    "name": "Vikram Malhotra",
+    "company": "Malhotra Steels",
+    "phone": "+91 9820011223",
+    "email": "vikram@malhotrasteels.test",
+    "plot_size_sqm": 2000,
+    "budget_inr": 28000000,
+    "timeline": "within_3_months",
+    "site_visit_interest": true,
+    "consent": true
+  }
+  ```
+
+### C. Tanmayi — WhatsApp Follow-Up & Consent Gate
+- **Her Role:** Outreach messaging with strict opt-out compliance.
+- **How to Query Leads for Outreach:**
+  Call `GET /api/v1/leads` with `X-Admin-Key`:
+  - Filter for leads with `consent=true` and `opted_out=false`.
+- **How to Record an Opt-out:**
+  If a prospect replies `STOP` or requests no contact, call:
+  `POST /api/v1/leads/{lead_id}/consent/withdraw-contact`
+  ```json
+  {
+    "requested_by": "Tanmayi WhatsApp Bot",
+    "source": "phone",
+    "evidence_reference": "Prospect requested STOP in WhatsApp chat"
+  }
+  ```
+  *The system immediately marks `opted_out=true`, permanently blocking future outreach.*
+
+### D. Pratha — Qualification Scoring & Ranking
+- **Her Role:** Transparent, deterministic scoring out of 100 with separate industry profiles.
+- **How It Works:**
+  - Configured in [`app/industry_profiles.json`](file:///c:/Users/MAYUR/Documents/CODEs/referralops_demo/app/industry_profiles.json).
+  - Automatically executed on every lead submission.
+  - Scores ≥ 75 are marked as `priority_review` and assigned `intent="hot"`.
+  - Full scoring rationale is saved in `fit_reasons`.
+
+### E. Peeyusha — Radar Signals & Apollo Leads
+- **Her Role:** Signal scraper collecting industrial expansion and relocations.
+- **How to Import Radar Signals:**
+  Send signals to `/api/v1/leads` with `source="radar"`:
+  ```json
+  {
+    "client": "Lakhotia",
+    "property_type": "industrial",
+    "lead_type": "company",
+    "source": "radar",
+    "evidence": "https://radar.signal.internal/signal/sotefin-bharat-expansion-2026",
+    "company": "Sotefin Bharat",
+    "name": "Demo Representative",
+    "phone": "+91 9000000042",
+    "email": "contact@sotefin-bharat.synthetic.test",
+    "linkedin_url": "https://www.linkedin.com/company/sotefin-bharat-parking",
+    "industry": "manufacturing",
+    "plot_size_sqm": 2500,
+    "budget_inr": 35000000,
+    "timeline": "within_6_months",
+    "is_decision_maker": true,
+    "site_visit_interest": true,
+    "consent": true,
+    "business_requirements": "Automated car parking systems manufacturer expanding operations."
+  }
+  ```
+
+---
+
+## 4. How to Run Locally
+
+### Prerequisites
+- Python 3.11+ (Python 3.14 compatible)
+- Windows PowerShell, macOS, or Linux terminal
+
+### 1. Setup Virtual Environment
 ```powershell
+# Clone or navigate into the directory
 cd referralops_demo
+
+# Create virtual environment
 py -m venv .venv
+
+# Activate environment (Windows PowerShell)
 .\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
+
+# (On Linux / macOS use: source .venv/bin/activate)
+
+# Install dependencies
 pip install -r requirements.txt
+```
+
+### 2. Configure Environment
+```powershell
 Copy-Item .env.example .env
+```
+Default `.env` configuration runs offline in SQLite mode with demo AI:
+```ini
+DATABASE_URL=sqlite:///./referralops.db
+ADMIN_API_KEY=demo-admin-key
+AI_PROVIDER=demo
+```
+
+### 3. Run Database Migrations
+```powershell
+alembic upgrade head
+```
+
+### 4. Start the Application
+```powershell
 uvicorn app.main:app --reload
 ```
 
-Open:
+### 5. Access the Platform
+- **Central Web Dashboard:** [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+- **Shree Heights Landing Page:** [http://127.0.0.1:8000/shree-heights](http://127.0.0.1:8000/shree-heights)
+- **Interactive Swagger API Docs:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+- **Health Check:** [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health)
 
-- Dashboard: <http://127.0.0.1:8000/>
-- API docs: <http://127.0.0.1:8000/docs>
-- Health: <http://127.0.0.1:8000/health>
+---
 
-The default local admin key is `demo-admin-key`. It exists only to make local demonstration easy. You can also start it with `run_windows.bat` after dependencies are installed. Set a new random `ADMIN_API_KEY` before any shared deployment. Do not expose this prototype to the public internet as-is.
+## 5. Multi-Location Shared Deployment (PostgreSQL)
 
-## Run tests
+To share **one central database** with teammates in different locations:
 
-In the activated virtual environment:
+1. **Provision a Managed PostgreSQL Database:**
+   - Free/low-cost providers: Supabase, Neon, Railway, Render Postgres, or AWS RDS.
+2. **Set the Hosted Database URL in `.env`:**
+   ```ini
+   DATABASE_URL=postgresql://user:password@db.example.host:5432/matrix360?sslmode=require
+   ADMIN_API_KEY=your_secure_random_admin_key
+   ```
+3. **Run Migrations on the PostgreSQL Instance:**
+   ```powershell
+   alembic upgrade head
+   ```
+4. **Deploy the App to Cloud Hosting:**
+   - Host the FastAPI app on Render, Fly.io, Railway, or AWS.
+   - Set the environment variables in your hosting provider's dashboard.
+5. **Share the Application URL:**
+   - Share `https://matrix360-leads.onrender.com` with teammates.
+   - **Never share the PostgreSQL connection string or credentials directly with other tools.**
 
+---
+
+## 6. Shared Grok / xAI Connection
+
+The platform includes a single server-side Grok / xAI connection so individual teammates do not need separate API keys:
+
+```ini
+AI_PROVIDER=xai
+XAI_API_KEY=your_xai_grok_key_here
+XAI_MODEL=grok-beta
+XAI_TIMEOUT_SECONDS=15
+```
+- When `AI_PROVIDER=demo`, all analysis and follow-up drafts run locally and deterministically.
+- Grok analysis runs securely on the backend; keys are never exposed in browser JavaScript.
+
+---
+
+## 7. Running the Automated Tests
+
+Run the complete test suite:
 ```powershell
-pytest -q
+pytest -v
 ```
 
-The tests use temporary SQLite databases and synthetic data. They do not call an external AI provider.
+**Results (29 passed):**
+- 19 baseline tests in `tests/test_api.py` (Referral intake, AI providers, human approval gates, audit events, KPIs).
+- 10 integration tests in `tests/test_matrix360_database.py` (Canonical save/retrieve, phone-10/email/LinkedIn deduplication, search/filter, idempotency, Shree Heights landing page, Sotefin Bharat demo lead, demo seeding).
 
-## Optional live OpenAI analysis
+---
 
-Demo mode is the default and is labelled in the dashboard. To call the external API for lead analysis, set the following in `.env`:
+## 8. Complete API Map
 
-```dotenv
-AI_PROVIDER=openai
-OPENAI_API_KEY=your_real_key_here
-OPENAI_MODEL=gpt-4o-mini
-OPENAI_TIMEOUT_SECONDS=15
-```
-
-Restart the server. The OpenAI adapter uses structured JSON output and Pydantic validation. It sends only qualification fields (industry, requirements, requested area, budget, timeline, decision-maker signal, site-visit interest)—not contact name, email, phone or referral partner identity. Free-text requirements remain untrusted input. API usage may incur provider charges. Keep keys out of source control and logs.
-
-If the external API fails or returns output rejected by the guard, the referral remains persisted and changes to `failed_manual_review`; the app does not silently substitute demo content or send anything externally.
-
-Official implementation references checked during design:
-
-- FastAPI testing with `TestClient` and pytest: <https://fastapi.tiangolo.com/tutorial/testing/>
-- SQLAlchemy session and transaction lifecycle: <https://docs.sqlalchemy.org/en/20/orm/session_basics.html>
-- OpenAI structured outputs: <https://developers.openai.com/api/docs/guides/structured-outputs?api-mode=chat>
-- n8n HTTP Request node: <https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.httprequest/>
-
-## API map
-
-| Method | Endpoint | Purpose | Access |
+| Method | Endpoint | Description | Auth |
 |---|---|---|---|
-| `GET` | `/health` | Basic health | Public |
-| `GET` | `/api/v1/config` | Provider mode and safety boundaries | Public |
-| `GET` | `/api/v1/profiles` | Available qualification profiles | Public |
-| `POST` | `/api/v1/referrals` | Validate and register referral | Partner code + consent gate; demo auth only |
-| `GET` | `/api/v1/partners` | List referral partners | Admin key |
-| `GET` | `/api/v1/leads` | List leads | Admin key |
-| `GET` | `/api/v1/leads/{id}` | Lead passport, referrals, approvals, visits, commission | Admin key |
-| `POST` | `/api/v1/leads/{id}/reanalyze` | Re-run AI adapter | Admin key |
-| `POST` | `/api/v1/leads/{id}/approval` | Approve/hold/reject follow-up draft | Admin key |
-| `POST` | `/api/v1/leads/{id}/site-visits` | Request a site visit | Admin key |
-| `PATCH` | `/api/v1/site-visits/{id}` | Schedule/complete/cancel visit | Admin key |
-| `POST` | `/api/v1/leads/{id}/commission/check` | Check demo eligibility for human review | Admin key |
-| `POST` | `/api/v1/leads/{id}/commission/review` | Record commission decision state | Admin key |
-| `GET` | `/api/v1/kpis` | Funnel and reliability KPIs | Admin key |
-| `GET` | `/api/v1/audit` | Workflow audit events | Admin key |
+| `POST` | `/api/v1/leads` | **Save a Lead** (Canonical endpoint with 3-step dedup & scoring) | Public / Partner |
+| `GET` | `/api/v1/leads` | **List & Search Leads** (Filters by client, property, intent, source, `q`) | `X-Admin-Key` |
+| `GET` | `/api/v1/leads/{id}` | **Lead Passport** (Full record, audit trail, duplicate claims) | `X-Admin-Key` |
+| `POST` | `/api/v1/leads/{id}/approval` | Approve/hold/reject AI follow-up draft | `X-Admin-Key` |
+| `POST` | `/api/v1/leads/{id}/reanalyze` | Re-run AI analysis | `X-Admin-Key` |
+| `POST` | `/api/v1/leads/{id}/consent/withdraw-contact` | **Record Opt-out** (Tanmayi's compliance gate) | `X-Admin-Key` |
+| `POST` | `/api/v1/leads/{id}/site-visits` | Request on-site visit | `X-Admin-Key` |
+| `PATCH` | `/api/v1/site-visits/{id}` | Schedule / complete / cancel site visit | `X-Admin-Key` |
+| `POST` | `/api/v1/demo/seed` | **Seed Synthetic Demo Leads** (Sotefin Bharat, Shree Heights, Vrindavan) | Public |
+| `GET` | `/shree-heights` | **Shalini's Shree Heights Landing Page** | Public |
+| `GET` | `/health` | Service health status | Public |
+| `GET` | `/api/v1/kpis` | Operational KPIs & conversion rates | `X-Admin-Key` |
 
-For protected calls include `X-Admin-Key: demo-admin-key` (or your configured key).
+---
 
-## Prototype business logic — assumptions to replace after stakeholder review
+## 9. Synthetic Demo Lead (`Sotefin Bharat`)
 
-- Initial target sectors: manufacturing, warehousing and logistics.
-- Initial score weights: industry (30), required area (20), budget estimate/scale (20), timeline (0–15), decision authority (0–10), site-visit intent (0–5).
-- Missing area, budget or timeline moves the lead to `needs_info`, rather than treating missing data as proof of poor fit.
-- `priority_review` begins at score 75; `standard_review` at 50; these thresholds need calibration against labelled examples.
-- A completed site visit enables **human commission review eligibility only**, provided attribution is not disputed. The application does not define actual commission rates or payment policy.
-- Duplicate detection matches exact normalised email or phone. Company-name similarity is not used to auto-merge records; fuzzy matching should be introduced only as a review flag with evaluation tests.
-- Consent booleans are suitable only for a synthetic demo. A production system needs legally reviewed consent wording, source/evidence, notice versioning, withdrawal handling, channel compliance and access controls.
+To verify the end-to-end integration with the demo lead from the Matrix360 build plan:
 
-## n8n workflow
+**Using PowerShell:**
+```powershell
+$body = @{
+    client = "Lakhotia"
+    property_type = "industrial"
+    lead_type = "company"
+    source = "radar"
+    evidence = "https://radar.signal.internal/signal/sotefin-bharat-expansion-2026"
+    name = "Demo Representative"
+    company = "Sotefin Bharat"
+    phone = "+91 9000000042"
+    email = "contact@sotefin-bharat.synthetic.test"
+    linkedin_url = "https://www.linkedin.com/company/sotefin-bharat-parking"
+    consent = $true
+    industry = "manufacturing"
+    plot_size_sqm = 2500
+    budget_inr = 35000000
+    timeline = "within_6_months"
+    is_decision_maker = $true
+    site_visit_interest = $true
+    business_requirements = "Automated car parking systems manufacturer expanding operations."
+} | ConvertTo-Json
 
-Import `n8n/referral_intake_workflow.json` into a local n8n instance. Update the HTTP Request node URL so it can reach this FastAPI process from the n8n runtime. With local Docker, `host.docker.internal` often resolves to the host; otherwise use the correct host/service name. The workflow is an integration starter, not an end-to-end verified deployment. Test it against synthetic data and configure an n8n error workflow and retry policy. Pass a stable idempotency key for webhook retries; never put prospect PII into execution logs unnecessarily.
+Invoke-RestMethod -Uri "http://127.0.0.1:8000/api/v1/leads" -Method Post -ContentType "application/json" -Body $body
+```
 
-## Before production
-
-Do not skip the security/legal step. Add real authentication and roles, rate limiting, CSRF/origin considerations for browser sessions, encrypted secrets, retention and deletion rules, consent withdrawal handling, CRM provider sandbox tests, data-processing agreements, monitoring, backups, data migration, load tests, and a review of applicable Indian privacy and commercial-communications requirements. Replace all demo policy with approved business decisions.
+**Retrieve it:**
+```powershell
+Invoke-RestMethod -Uri "http://127.0.0.1:8000/api/v1/leads?q=Sotefin" -Headers @{"X-Admin-Key"="demo-admin-key"}
+```
