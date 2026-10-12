@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shree Heights · Modern 2 & 3 BHK Living</title>
+  <style>
+    :root {
+      --primary: #1a445e;
+      --accent: #237494;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --green: #10b981;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand { font-size: 20px; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary);
+      background: #e0f2fe;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .hero {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .hero-content h1 {
+      font-size: 38px;
+      font-weight: 850;
+      color: var(--primary);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .hero-content p {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .feature-card strong { display: block; font-size: 14px; color: var(--primary); margin-bottom: 4px; }
+    .feature-card span { font-size: 12px; color: var(--muted); }
+    .compliance-box {
+      background: #f1f5f9;
+      border-left: 4px solid var(--accent);
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      font-size: 12px;
+      color: #334155;
+      margin-top: 20px;
+    }
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+    .form-card h2 { font-size: 20px; font-weight: 800; color: var(--primary); margin-bottom: 6px; }
+    .form-card p { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      outline: none;
+      background: #fff;
+    }
+    .form-group input:focus, .form-group select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(35, 116, 148, 0.15);
+    }
+    .consent-check {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 12px;
+      color: #475569;
+      margin: 18px 0;
+    }
+    .consent-check input { margin-top: 3px; accent-color: var(--accent); }
+    .btn-submit {
+      width: 100%;
+      background: var(--primary);
+      color: #fff;
+      padding: 12px;
+      border: 0;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-submit:hover { background: #133246; }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .alert {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      display: none;
+      white-space: pre-wrap;
+    }
+    .alert.success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; display: block; }
+    .alert.error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; display: block; }
+    .footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 11px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      margin-top: 60px;
+    }
+    @media (max-width: 800px) {
+      .hero { grid-template-columns: 1fr; gap: 24px; margin: 20px auto; }
+      .hero-content h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="brand">Shree Heights</div>
+    <div>
+      <span class="badge">RERA: WBRERA/P/HOO/2023/000504</span>
+    </div>
+  </header>
+
+  <main class="hero">
+    <div class="hero-content">
+      <span class="badge">Hooghly Residential Opportunity</span>
+      <h1 style="margin-top: 10px;">Premium 2 & 3 BHK Apartments Built for Modern Living.</h1>
+      <p>Experience thoughtfully planned configurations, connectivity, and dedicated lifestyle spaces. Schedule an on-site visit or consultation directly with our sales advisory team.</p>
+
+      <div class="features">
+        <div class="feature-card">
+          <strong>2 BHK Configuration</strong>
+          <span>Efficient space planning, optimal natural light, and premium fixtures.</span>
+        </div>
+        <div class="feature-card">
+          <strong>3 BHK Configuration</strong>
+          <span>Spacious family layouts with dual balconies and dedicated utility areas.</span>
+        </div>
+        <div class="feature-card">
+          <strong>Location Advantage</strong>
+          <span>Convenient access to transit hubs, healthcare, and educational centers.</span>
+        </div>
+        <div class="feature-card">
+          <strong>Direct Developer Verification</strong>
+          <span>Transparent enquiry handling logged directly to central system.</span>
+        </div>
+      </div>
+
+      <div class="compliance-box">
+        <strong>Official Regulatory Disclosure:</strong><br>
+        Registered under West Bengal Real Estate Regulatory Authority (RERA) reference <code>WBRERA/P/HOO/2023/000504</code>. All site visits and consultations are scheduled by authorized representatives. No unverified pricing or availability claims are made prior to personal consultation.
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h2>Book a Site Visit & Consultation</h2>
+      <p>Enquire today — submissions are logged directly into our central database.</p>
+
+      <form id="enquiry-form">
+        <div class="form-group">
+          <label for="name">Full Name *</label>
+          <input type="text" id="name" required minlength="2" maxlength="120" placeholder="e.g. Ananya Das">
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number *</label>
+          <input type="tel" id="phone" required minlength="10" maxlength="20" placeholder="e.g. +91 9830012345">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="e.g. ananya@example.test">
+        </div>
+
+        <div class="form-group">
+          <label for="property_config">Preferred Configuration *</label>
+          <select id="property_config" required>
+            <option value="2 BHK">2 BHK Apartment</option>
+            <option value="3 BHK">3 BHK Apartment</option>
+            <option value="Flexible">Interested in both 2 & 3 BHK</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="timeline">Planning Horizon</label>
+          <select id="timeline">
+            <option value="immediate">Immediate / Next 30 Days</option>
+            <option value="within_3_months">Within 3 Months</option>
+            <option value="within_6_months">Within 6 Months</option>
+            <option value="unknown">Exploring Options</option>
+          </select>
+        </div>
+
+        <div class="consent-check">
+          <input type="checkbox" id="consent" required>
+          <label for="consent">I consent to Shree Heights sales representatives contacting me via phone/email regarding this enquiry and arranging a site visit.</label>
+        </div>
+
+        <button type="submit" id="submit-btn" class="btn-submit">Book a Site Visit</button>
+        <div id="form-alert" class="alert"></div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer">
+    Shree Heights · West Bengal RERA Registration: WBRERA/P/HOO/2023/000504 · Matrix360 Central Database Integrated
+  </footer>
+
+  <script>
+    // Capture UTM tracking parameters from URL query string
+    const urlParams = new URLSearchParams(window.location.search);
+    const utmSource = urlParams.get('utm_source') || 'landing_page';
+    const utmCampaign = urlParams.get('utm_campaign') || 'direct_web';
+
+    const form = document.getElementById('enquiry-form');
+    const alertBox = document.getElementById('form-alert');
+    const submitBtn = document.getElementById('submit-btn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alertBox.className = 'alert';
+      alertBox.textContent = '';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting to central database…';
+
+      const payload = {
+        client: 'Shree Heights',
+        property_type: 'flats',
+        lead_type: 'buyer',
+        source: utmSource.includes('ad') ? 'ad' : 'landing_page',
+        evidence: `Shree Heights Landing Page Enquiry (Config: ${document.getElementById('property_config').value})`,
+        name: document.getElementById('name').value.trim(),
+        company: 'Individual Buyer',
+        phone: document.getElementById('phone').value.trim(),
+        email: document.getElementById('email').value.trim() || undefined,
+        timeline: document.getElementById('timeline').value,
+        site_visit_interest: true,
+        consent: document.getElementById('consent').checked,
+        utm_source: utmSource,
+        utm_campaign: utmCampaign,
+        business_requirements: `Interested in ${document.getElementById('property_config').value} at Shree Heights. Requested site visit.`
+      };
+
+      try {
+        const res = await fetch('/api/v1/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.detail ? (typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail)) : 'Submission failed');
+        }
+
+        alertBox.className = 'alert success';
+        if (data.is_duplicate) {
+          alertBox.textContent = `Thank you! Your enquiry has been received and linked to your existing record.\nLead Reference ID: ${data.lead_id}\nOur Hooghly sales team will reach out to arrange your site visit.`;
+        } else {
+          alertBox.textContent = `Enquiry successfully logged in central database!\nLead Reference ID: ${data.lead_id}\nPriority Fit Score: ${data.lead.fit_score}/100 · Intent: ${data.lead.intent.toUpperCase()}\nOur sales team has received your request.`;
+        }
+        form.reset();
+      } catch (err) {
+        alertBox.className = 'alert error';
+        alertBox.textContent = `Error submitting enquiry: ${err.message}`;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Book a Site Visit';
+      }
+    });
+  </script>
+</body>
+</html>

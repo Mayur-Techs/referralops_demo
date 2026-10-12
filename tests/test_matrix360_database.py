@@ -322,3 +322,33 @@ def test_demo_lead_sotefin_bharat_synthetic(test_client):
     results = search_res.json()
     assert len(results) == 1
     assert results[0]["company"] == "Sotefin Bharat"
+
+
+def test_shree_heights_landing_page_route(test_client):
+    """Verifies Shalini's Shree Heights landing page is served correctly."""
+    res = test_client.get("/shree-heights")
+    assert res.status_code == 200
+    assert "Shree Heights" in res.text
+    assert "WBRERA/P/HOO/2023/000504" in res.text
+    assert "Book a Site Visit" in res.text
+
+
+def test_seed_demo_leads_endpoint(test_client):
+    """Verifies POST /api/v1/demo/seed populates synthetic demo leads without duplicates."""
+    seed_res = test_client.post("/api/v1/demo/seed")
+    assert seed_res.status_code == 200
+    body = seed_res.json()
+    assert body["status"] == "ok"
+    assert body["seeded_leads_count"] == 3
+
+    # Calling seed a second time should be idempotent (0 newly created)
+    seed_res2 = test_client.post("/api/v1/demo/seed")
+    assert seed_res2.status_code == 200
+    assert seed_res2.json()["seeded_leads_count"] == 0
+
+    # Query leads
+    leads = test_client.get("/api/v1/leads", headers=ADMIN).json()
+    companies = {l["company"] for l in leads}
+    assert "Sotefin Bharat" in companies
+    assert "Individual Buyer" in companies
+    assert "Kailash Agro Industries" in companies

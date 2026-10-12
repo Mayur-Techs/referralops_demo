@@ -278,9 +278,144 @@ def create_app(
     def dashboard():
         return FileResponse(STATIC_DIR / "index.html")
 
+    @app.get("/shree-heights", include_in_schema=False)
+    def shree_heights_landing():
+        return FileResponse(STATIC_DIR / "shree_heights.html")
+
     @app.get("/health", tags=["system"])
     def health():
         return {"status": "ok", "service": "referralops", "database": "configured"}
+
+    @app.post("/api/v1/demo/seed", tags=["system"])
+    def seed_demo_leads(db: Session = Depends(get_db)):
+        """Seed synthetic demo leads from the Matrix360 build plan.
+        Includes Sotefin Bharat (Radar), Shree Heights enquiry, and Vrindavan Greens enquiry.
+        """
+        seeds = [
+            {
+                "client": "Lakhotia",
+                "property_type": "industrial",
+                "lead_type": "company",
+                "source": "radar",
+                "evidence": "https://radar.signal.internal/signal/sotefin-bharat-expansion-2026",
+                "name": "Demo Representative",
+                "company": "Sotefin Bharat",
+                "phone": "+91 9000000042",
+                "email": "contact@sotefin-bharat.synthetic.test",
+                "linkedin_url": "https://www.linkedin.com/company/sotefin-bharat-parking",
+                "consent": True,
+                "industry": "manufacturing",
+                "plot_size_sqm": 2500,
+                "budget_inr": 35000000,
+                "timeline": "within_6_months",
+                "is_decision_maker": True,
+                "site_visit_interest": True,
+                "business_requirements": "Automated car parking systems manufacturer expanding operations; requires industrial shed with high power load.",
+            },
+            {
+                "client": "Shree Heights",
+                "property_type": "flats",
+                "lead_type": "buyer",
+                "source": "ad",
+                "evidence": "Shree Heights Meta Ad Click (Monsoon Campaign)",
+                "name": "Ananya Das",
+                "company": "Individual Buyer",
+                "phone": "+91 9830012345",
+                "email": "ananya.das@synthetic.test",
+                "linkedin_url": None,
+                "consent": True,
+                "industry": "other",
+                "plot_size_sqm": 120,
+                "budget_inr": 6500000,
+                "timeline": "immediate",
+                "is_decision_maker": True,
+                "site_visit_interest": True,
+                "utm_source": "meta_ads",
+                "utm_campaign": "monsoon_launch",
+                "business_requirements": "Enquiry for 3 BHK flat at Shree Heights. Requested site visit.",
+            },
+            {
+                "client": "Vrindavan Greens",
+                "property_type": "plots",
+                "lead_type": "company",
+                "source": "chat",
+                "evidence": "Website chat qualification session #104",
+                "name": "Kailash Agro Rep",
+                "company": "Kailash Agro Industries",
+                "phone": "+91 9748011223",
+                "email": "kailash@agro.synthetic.test",
+                "linkedin_url": None,
+                "consent": True,
+                "industry": "other",
+                "plot_size_sqm": 500,
+                "budget_inr": 12000000,
+                "timeline": "within_3_months",
+                "is_decision_maker": True,
+                "site_visit_interest": False,
+                "business_requirements": "Looking for commercial plot at Vrindavan Greens for storage depot.",
+            },
+        ]
+        created = []
+        for s in seeds:
+            phone_10 = normalize_phone_last10(s["phone"])
+            existing = db.scalar(select(Lead).where(Lead.dedup_phone == phone_10))
+            if not existing:
+                score_data = {
+                    "industry": s["industry"],
+                    "plot_size_sqm": s["plot_size_sqm"],
+                    "budget_inr": s["budget_inr"],
+                    "timeline": s["timeline"],
+                    "is_decision_maker": s["is_decision_maker"],
+                    "site_visit_interest": s["site_visit_interest"],
+                }
+                res = calculate_score(score_data, profile_id=s["property_type"])
+                lead = Lead(
+                    client=s["client"],
+                    property_type=s["property_type"],
+                    lead_type=s["lead_type"],
+                    source=s["source"],
+                    evidence=s["evidence"],
+                    company_name=s["company"],
+                    contact_name=s["name"],
+                    email=s["email"],
+                    phone=s["phone"],
+                    linkedin_url=s.get("linkedin_url"),
+                    dedup_phone=phone_10,
+                    dedup_email=normalize_email_key(s["email"]),
+                    dedup_linkedin=normalize_linkedin_key(s.get("linkedin_url")),
+                    consent_to_share=s["consent"],
+                    contact_consent=s["consent"],
+                    consent_notice_version=settings.consent_notice_version,
+                    opted_out=False,
+                    score=res.score,
+                    score_reasons=res.reasons,
+                    missing_fields=res.missing_fields,
+                    status=res.status,
+                    intent=res.intent,
+                    stage="new",
+                    utm_source=s.get("utm_source"),
+                    utm_campaign=s.get("utm_campaign"),
+                    industry=s["industry"],
+                    business_requirements=s["business_requirements"],
+                    plot_size_sqm=s["plot_size_sqm"],
+                    budget_inr=s["budget_inr"],
+                    timeline=s["timeline"],
+                    is_decision_maker=s["is_decision_maker"],
+                    site_visit_interest=s["site_visit_interest"],
+                )
+                db.add(lead)
+                db.flush()
+                submission = ReferralSubmission(
+                    lead_id=lead.id,
+                    submitted_company_name=lead.company_name,
+                    is_duplicate=False,
+                    status="accepted",
+                    payload_hash=_generic_payload_hash(s),
+                )
+                db.add(submission)
+                created.append(lead.id)
+        db.commit()
+        return {"status": "ok", "seeded_leads_count": len(created), "lead_ids": created}
 
     @app.get("/api/v1/config", tags=["system"])
     def public_config():
